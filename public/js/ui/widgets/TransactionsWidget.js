@@ -1,43 +1,34 @@
-/**
- * Класс TransactionsWidget отвечает за
- * открытие всплывающих окон для
- * создания нового дохода или расхода
- * */
+//Класс TransactionsWidget отвечает за открытие всплывающих окон для
+//создания нового дохода или расхода
 
- class TransactionsWidget {
-  /**
-   * Устанавливает полученный элемент
-   * в свойство element.
-   * Если переданный элемент не существует,
-   * необходимо выкинуть ошибку.
-   * */
+class TransactionsWidget {
+  //Устанавливает полученный элемент в свойство element.
+  //Если переданный элемент не существует, необходимо выкинуть ошибку.
   constructor( element ) {
-    if (!element) {
-      throw new Error("Невалидное значение для TransactionsWidget"); 
-    }
+    if (!element) throw new Error('No data!');
+
     this.element = element;
     this.registerEvents();
+
   }
-  /**
-   * Регистрирует обработчики нажатия на
-   * кнопки «Новый доход» и «Новый расход».
-   * При нажатии вызывает Modal.open() для
-   * экземпляра окна
-   * */
+  
+  //Регистрирует обработчики нажатия на кнопки «Новый доход» и «Новый расход».
+  //При нажатии вызывает Modal.open() для экземпляра окна
   registerEvents() {
-    const transactionBtns = document.querySelectorAll('.transactions-panel > button');
-    transactionBtns.forEach(button => {
-      button.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        switch (ev.target.closest('button').classList[3]) {
-          case 'create-income-button':
-            App.getModal('newIncome').open();
-          break;
-          case 'create-expense-button':
-            App.getModal('newExpense').open();
-          break;
-        }
-      });
+    //this.element.getElementsByClassName('create-income-button')[0]
+    this.element.addEventListener('click', (e) => {
+      e.preventDefault();
+      const createIncomeButton = e.target.closest('.create-income-button');
+      const createExpenseButton = e.target.closest('.create-expense-button');
+      const accounts = [...document.querySelectorAll('.account')].length;
+
+      if (createIncomeButton && (accounts !== 0)) {
+        App.getModal('newIncome').open();
+      }
+
+      if (createExpenseButton && (accounts !== 0)) {
+        App.getModal('newExpense').open();
+      }
     });
   }
 }
